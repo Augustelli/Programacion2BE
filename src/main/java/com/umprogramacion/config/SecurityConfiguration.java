@@ -50,6 +50,10 @@ public class SecurityConfiguration {
                     // prettier-ignore
                 authz
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/authenticate")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/user/**")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/user/register")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/device")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/device/inform-sell")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/authenticate")).permitAll()
                     .requestMatchers(mvc.pattern("/api/register")).permitAll()
                     .requestMatchers(mvc.pattern("/api/activate")).permitAll()
