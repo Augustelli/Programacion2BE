@@ -24,28 +24,12 @@ public class DeviceScheduler {
         this.httpRequestClient = httpRequestClient;
     }
 
-    private String obtainBearerToken() {
-        try {
-            log.info("Obtaining bearer token");
-            AutenticarUsuarioCatedra authRequest = new AutenticarUsuarioCatedra();
-            ResponseEntity request = httpRequestClient.post("http://192.168.194.254:8080/api/authenticate", authRequest);
-            log.info("Request to obtain bearer token: {}", request);
-            String token = request.getBody().toString();
-            log.info("Bearer token response: {}", token);
-            ObjectMapper mapper = new ObjectMapper();
-            log.info("Bearer token: {}", mapper.readTree(token).get("id_token").asText());
-            return mapper.readTree(token).get("id_token").asText();
-        } catch (JsonProcessingException e) {
-            log.error("Error obtaining bearer token", e);
-            throw new RuntimeException("Bearer token not found", e);
-        }
-    }
 
     @PostConstruct
     public void init() {
         try {
             log.info("Initializing DeviceScheduler");
-            this.bearerToken = obtainBearerToken();
+            this.bearerToken = this.httpRequestClient.obtainBearerToken();
             log.info("Bearer token obtained: {}", this.bearerToken);
             refreshDeviceList();
         } catch (Exception e) {
